@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tables xmlns="http://xsd.tfzzh.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xsd.tfzzh.com xsd/data_xsd.xsd">
+	<table id="29801" name="login" modelId="298">
+		<proName>Login</proName>
+		<src>log</src>
+		<desc>登陆日志</desc>
+		<createTime>2017-08-23</createTime>
+		<createUser>许纬杰</createUser>
+		<fields>
+			<field name="id" id="29801001" type="int" length="11" key="true" increment="true">
+				<proName>Id</proName>
+				<desc>自增ID</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="uid" id="29801002" type="char" length="32">
+				<proName>Uid</proName>
+				<desc>相关用户ID</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="pf_open_id" id="29801003" type="varchar" length="32">
+				<proName>PfOpenId</proName>
+				<desc>相关渠道的OpendId</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="open_id" id="29801004" type="char" length="32">
+				<proName>OpenId</proName>
+				<desc>淘游的OpenId</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="game_code" id="29801005" type="char" length="6">
+				<proName>GameCode</proName>
+				<desc>游戏Code</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="pf_code" id="29801006" type="char" length="6">
+				<proName>PfCode</proName>
+				<desc>渠道Code</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="is_new" id="29801007" type="boolean">
+				<proName>IsNew</proName>
+				<desc>是否新增帐号</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="log_time" id="29801008" type="datetime">
+				<proName>LogTime</proName>
+				<desc>日志时间</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<!-- other info 其他信息接续填写 -->
+		</fields>
+	</table>
+
+	<table id="29802" name="online" modelId="298">
+		<proName>Online</proName>
+		<src>log</src>
+		<desc>在线情况日志</desc>
+		<createTime>2017-08-23</createTime>
+		<createUser>许纬杰</createUser>
+		<fields>
+			<field name="id" id="29802001" type="int" length="11" key="true" increment="true">
+				<proName>Id</proName>
+				<desc>自增ID</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="uid" id="29802002" type="char" length="32"><!-- 根据实际环境，可选属性 -->
+				<proName>Uid</proName>
+				<desc>相关用户ID</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="open_id" id="29802003" type="char" length="32">
+				<proName>OpenId</proName>
+				<desc>淘游的OpenId</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="game_code" id="29802004" type="char" length="6">
+				<proName>GameCode</proName>
+				<desc>游戏Code</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="pf_code" id="29802005" type="char" length="6">
+				<proName>PfCode</proName>
+				<desc>渠道Code</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="online_times" id="29802006" type="int" length="11">
+				<proName>OnlineTimes</proName>
+				<desc>当次在线的计次数量</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="time_interval" id="29802007" type="int" length="11">
+				<proName>TimeInterval</proName>
+				<desc>时间间隔，单位s</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<field name="log_time" id="29802008" type="datetime">
+				<proName>LogTime</proName>
+				<desc>日志时间</desc>
+				<createTime>2017-08-23</createTime>
+				<createUser>许纬杰</createUser>
+			</field>
+			<!-- other info 其他信息接续填写 -->
+		</fields>
+	</table>
+
+</tables>
+

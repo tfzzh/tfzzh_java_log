@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xt="http://xsd.tfzzh.com" targetNamespace="http://xsd.tfzzh.com" elementFormDefault="qualified">
+	<!-- 用include增加，同targetNamespace名的xsd文件 -->
+	<xsd:include schemaLocation="data_conf_xsd.xsd" />
+	<!-- 最外层，表列表 -->
+	<xsd:element name="tables">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="zh-cn"><![CDATA[这里有一套表]]></xsd:documentation>
+		</xsd:annotation>
+		<!-- 第一层标签定义 -->
+		<xsd:complexType>
+			<xsd:choice>
+				<!-- 单一数据表信息 -->
+				<xsd:element name="table" maxOccurs="unbounded" type="xt:tableType">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="zh-cn"><![CDATA[我是一张表]]></xsd:documentation>
+					</xsd:annotation>
+					<!-- 控制属性数据表字段名唯一 -->
+					<xsd:unique name="fNameUni">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="zh-cn"><![CDATA[控制属性数据表字段名唯一]]></xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="xt:fields/xt:field" />
+						<xsd:field xpath="@name" />
+					</xsd:unique>
+					<!-- 控制属性项目命名唯一 -->
+					<xsd:key name="fProNameUni">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="zh-cn"><![CDATA[控制属性项目命名唯一]]></xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="xt:fields/xt:field" />
+						<xsd:field xpath="xt:proName" />
+					</xsd:key>
+					<!-- 控制主键中属性名匹配 -->
+					<xsd:keyref name="keyRef" refer="xt:fProNameUni">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="zh-cn"><![CDATA[控制主键中属性名匹配]]></xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="xt:key/xt:keyField" />
+						<xsd:field xpath="@val" />
+					</xsd:keyref>
+					<!-- 控制索引中属性名匹配 -->
+					<xsd:keyref name="indexRef" refer="xt:fProNameUni">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="zh-cn"><![CDATA[控制索引中属性名匹配]]></xsd:documentation>
+						</xsd:annotation>
+						<xsd:selector xpath="xt:indexs/xt:index/xt:indexField" />
+						<xsd:field xpath="@val" />
+					</xsd:keyref>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:complexType>
+		<!-- 表ID，全局唯一 -->
+		<xsd:key name="tIdUni">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[表ID，全局唯一]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="xt:table" />
+			<xsd:field xpath="@id" />
+		</xsd:key>
+		<!-- 表数据库用名称，全局唯一 -->
+		<xsd:unique name="tNameUni">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[表数据库用名称，全局唯一]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="xt:table" />
+			<xsd:field xpath="@name" />
+		</xsd:unique>
+		<!-- 表项目中用名，全局唯一 -->
+		<xsd:unique name="tProNameUni">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[表项目中用名，全局唯一]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="xt:table" />
+			<xsd:field xpath="xt:proName" />
+		</xsd:unique>
+		<!-- 字段ID，全局唯一 -->
+		<xsd:key name="fIdUni">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[字段ID，全局唯一]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:selector xpath="xt:table/xt:fields/xt:field" />
+			<xsd:field xpath="@id" />
+		</xsd:key>
+	</xsd:element>
+	<!-- 表信息相关 -->
+	<xsd:complexType name="tableType">
+		<xsd:all>
+			<xsd:element name="proName">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[项目中名，首字符大写，只能英文字符，不可存在数字符号及中文等]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="(([A-Z])([a-z]{0,15})){1,4}" />
+						<xsd:whiteSpace value="replace" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="src">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[所属源码包名]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="([a-z]){1,16}(_([a-z]){1,16}){0,3}" />
+						<xsd:whiteSpace value="replace" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="funName" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[所相关功能名]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="([a-z]){1,16}([A-z]([a-z]){0,15}){0,3}" />
+						<xsd:whiteSpace value="replace" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="desc">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[表说明]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1" />
+						<xsd:maxLength value="64" />
+						<xsd:whiteSpace value="replace" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="createTime" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[创建时间]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="createUser" type="xt:userType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[创建人]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fields">
+				<!-- 第二层，字段列表 -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[表中字段集合]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:choice>
+						<!-- 单一数据字段信息 -->
+						<xsd:element name="field" maxOccurs="255" type="xt:fieldType">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="zh-cn"><![CDATA[我是一个字段]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:element name="key" minOccurs="1" maxOccurs="1">
+				<!-- TODO 第二层，主键配置 -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[主键索引]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:element name="keyField" maxOccurs="5">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="zh-cn"><![CDATA[顺位主键索引]]></xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:attribute name="val" type="xsd:string" use="required">
+									<xsd:annotation>
+										<xsd:documentation xml:lang="zh-cn"><![CDATA[对应目标字段项目中命名，注意头部报错提示]]></xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="indexs" minOccurs="0" maxOccurs="1">
+				<!-- 第二层，字段列表 -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[表相关索引集合，暂定最多可设置16个索引]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:choice>
+						<!-- 单一数据字段信息 -->
+						<xsd:element name="index" maxOccurs="16" type="xt:indexType">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="zh-cn"><![CDATA[我是一个索引，注意索引中字段顺序]]></xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:all>
+		<!-- table的属性 -->
+		<xsd:attribute name="id" type="xsd:unsignedInt" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[表ID，全局唯一，需要限定为模型ID+两位整数]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="modelId" type="xt:modelType" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[所相关功能模型ID]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="name" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[在数据库中用名]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:pattern value="([a-z]){1,16}(_([a-z]){1,16}){0,3}" />
+					<xsd:whiteSpace value="replace" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="connName">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[所相关连接池配置名]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:pattern value="([a-z]{0,15}){1}(([A-Z])([a-z]{0,15})){0,3}" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!-- 表中字段信息相关 -->
+	<xsd:complexType name="fieldType">
+		<xsd:all>
+			<xsd:element name="proName">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[项目中名，首字符大写，只能英文字符，不可存在数字符号及中文等]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="(([A-Z])([a-z]{0,15})){1,4}" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="desc">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[字段说明]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:minLength value="1" />
+						<xsd:maxLength value="64" />
+						<xsd:whiteSpace value="replace" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="defValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[默认值]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="createTime" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[创建时间]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="createUser" type="xt:userType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="zh-cn"><![CDATA[创建人]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+		<!-- table下field的属性 -->
+		<xsd:attribute name="id" type="xsd:unsignedInt" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[字段的ID，全局唯一]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="name" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[字段在数据库中名字]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:pattern value="([a-z]){1,16}(_([a-z]){1,16}){0,3}" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="type" type="xt:fieldTypeEnum" use="required">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[字段类型]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="length">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[字段长度限定，部分字段无关长度限定]]></xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="1" />
+					<xsd:maxLength value="12" />
+					<xsd:pattern value="(([0-9]{1,9})(,([0-9]){1,7}){0,1})" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="key" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[是否主键，默认为不是主键，单表可以设置多主键]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="unique" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[是否唯一，默认为不是唯一]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="increment" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[是否自增，针对数值型，单表只能一个属性为自增]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="uuid" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[是否UUID，默认为不是UUID，单表正常最多仅有一个UUID]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="nonnegative" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[是否非负，针对数值型，默认可负]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="nonnull" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[是否可空，默认不可空]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!-- -->
+	<!-- 表索引相关 -->
+	<xsd:complexType name="indexType">
+		<xsd:choice>
+			<xsd:element name="indexField" maxOccurs="10">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[索引字段对应属性项目用名]]></xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:attribute name="val" type="xsd:string" use="required">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="zh-cn"><![CDATA[对应目标字段项目中命名，注意头部报错提示]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+					<xsd:attribute name="order" type="xt:orderTypeEnum" default="asc">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="zh-cn"><![CDATA[索引相关字段排序规则，默认为正序排列]]></xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:choice>
+		<xsd:attribute name="type" type="xt:indexTypeEnum" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="zh-cn"><![CDATA[索引类型(index|unique|fulltext)]]></xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<xsd:simpleType name="fieldTypeEnum">
+		<xsd:annotation>
+			<xsd:documentation>模型ID类型限定</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="char">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[固定长度字符串]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="varchar">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[浮动长度字符串]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="int">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[整型11位]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="tinyint">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[短整形4位]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="bigint">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[长整型20位]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="double">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[长浮点型]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="float">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[短浮点型]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="boolean">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[布尔型]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="text">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[文件类型，len：65535]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="meiumtext">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[中文本类型：len：16777215]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="longtext">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[大文本类型：len：4294967295]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="datetime">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[时间日期]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="date">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[日期]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="time">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[时间]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="bit">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[二进制为主的数据记录方式]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="blob">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[字节流记录：len：65535]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="tinyblob">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[短字节流记录：len：255]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="mediumblob">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[中字节流记录：len：16777215]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="longblob">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[长字节流记录：len：4294967295]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- 索引类型 -->
+	<xsd:simpleType name="indexTypeEnum">
+		<xsd:annotation>
+			<xsd:documentation>索引类型限定</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="index">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[一般索引]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="unique">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[唯一索引]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="fulltext">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[全文索引]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- 排序类型 -->
+	<xsd:simpleType name="orderTypeEnum">
+		<xsd:annotation>
+			<xsd:documentation>索引排序限定</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="asc">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[正序]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="desc">
+				<xsd:annotation>
+					<xsd:documentation><![CDATA[倒序]]></xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

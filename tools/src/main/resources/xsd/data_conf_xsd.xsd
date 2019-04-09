@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xsd.tfzzh.com" targetNamespace="http://xsd.tfzzh.com">
+
+	<xsd:simpleType name="userType">
+		<xsd:annotation>
+			<xsd:documentation>项目开发人员限定</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="许纬杰" />
+			<xsd:enumeration value="李亚伟" />
+			<xsd:enumeration value="刘亚康" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="modelType">
+		<xsd:annotation>
+			<xsd:documentation>模型ID类型限定</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:unsignedInt">
+			<xsd:enumeration value="201">
+				<xsd:annotation>
+					<xsd:documentation>用户数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="202">
+				<xsd:annotation>
+					<xsd:documentation>平台数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="203">
+				<xsd:annotation>
+					<xsd:documentation>游戏数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="204">
+				<xsd:annotation>
+					<xsd:documentation>资讯数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="205">
+				<xsd:annotation>
+					<xsd:documentation>商城数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="206">
+				<xsd:annotation>
+					<xsd:documentation>礼包数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="291">
+				<xsd:annotation>
+					<xsd:documentation>基础数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="298">
+				<xsd:annotation>
+					<xsd:documentation>日志数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="299">
+				<xsd:annotation>
+					<xsd:documentation>临时功能</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema>
