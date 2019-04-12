@@ -34,8 +34,4 @@ public class NewMakeFileForExcel {
 			new SystemBeanTemplate(t);
 		}
 	}
-
-	public static void main(String[] args) {
-		new NewMakeFileForExcel();
-	}
 }

@@ -55,12 +55,13 @@ public class LogDAO {
 	 * 
 	 * @author Xu Weijie
 	 * @datetime 2017年8月26日_下午7:28:39
+	 * @param <E> 日志信息对象
 	 * @param conn 所用连接信息
 	 * @param e 目标表对象
 	 * @return -1，未成功；<br />
-	 *         0，没有任何变化；<br />
-	 *         1，创建的新表；<br />
-	 *         2，更新的内容；<br />
+	 * 			0，没有任何变化；<br />
+	 * 			1，创建的新表；<br />
+	 * 			2，更新的内容；<br />
 	 */
 	private <E extends BaseLogBean> int createOrEditTable(final ConnectionInfo conn, final E e) {
 		final long l = System.currentTimeMillis();
@@ -402,6 +403,7 @@ public class LogDAO {
 	 * 
 	 * @author Xu Weijie
 	 * @datetime 2017年8月26日_下午7:21:32
+	 * @param <E> 日志信息对象
 	 * @param sb 组合用字串，会直接将增加的内容，放入进去
 	 * @param beforeName 前一个字段的字段名
 	 * @param efs 修改字段列表
@@ -430,6 +432,7 @@ public class LogDAO {
 	 * 
 	 * @author Xu Weijie
 	 * @datetime 2017年8月26日_下午6:05:07
+	 * @param <E> 日志信息对象
 	 * @param el 数据列表
 	 */
 	public <E extends BaseLogBean> void insertDatas(final List<E> el) {
